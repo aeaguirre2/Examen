@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          background-color: #4caf50;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
+        }
+    
+        .emisor {
+          width: 300px;
+          padding: 15px;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+          margin: 10px;
+        }
+    
+        .receptor {
+          width: 300px;
+          padding: 15px;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+          margin: 10px;
+        }
+    
+        .emisor h2 {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+    
+        .receptor h2 {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+    
+        .emisor button {
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          padding: 10px;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+    
+        .receptor p {
+          margin: 0;
+        }
+    
+        .receptor span {
+          font-weight: bold;
+        }
+      </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicación entre Componentes</title>
+</head>
+<body>
+
+<!-- emisor-component -->
+<script>
+  class EmisorComponent extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      const container = document.createElement('div');
+      container.innerHTML = `
+        <h2>Emisor</h2>
+        <button>Enviar Saludo</button>
+      `;
+      const button = container.querySelector('button');
+      button.addEventListener('click', () => {
+        const evento = new CustomEvent('saludoEnviado', {
+          detail: { mensaje: '¡Mensaje recibido desde Emisor!' }
+        });
+        document.dispatchEvent(evento);
+      });
+      this.shadowRoot.appendChild(container);
+    }
+  }
+
+  customElements.define('emisor-component', EmisorComponent);
+</script>
+
+<!-- receptor-component -->
+<script>
+  class ReceptorComponent extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoot.innerHTML = `
+        <h2>Receptor</h2>
+        <p>Mensaje recibido: <span id="mensaje"></span></p>
+      `;
+      this.mensajeContainer = this.shadowRoot.getElementById('mensaje');
+      document.addEventListener('saludoEnviado', (event) => {
+        this.mensajeContainer.textContent = event.detail.mensaje;
+      });
+    }
+  }
+
+  customElements.define('receptor-component', ReceptorComponent);
+</script>
+
+<emisor-component></emisor-component>
+<receptor-component></receptor-component>
+
+</body>
+</html>
+
+
+
+
+  
