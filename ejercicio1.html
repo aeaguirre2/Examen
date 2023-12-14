@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saludo Component</title>
+  <style>
+    body {
+      background-color: #7c2a2a;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    saludo-component {
+      background-color: #867979;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+
+    saludo-component h1 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    saludo-component p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #666;
+    }
+
+    saludo-component button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+
+    saludo-component button:hover {
+      background-color: #45a049;
+    }
+
+  </style>
+</head>
+<body>
+
+<script>
+  class SaludoComponent extends HTMLElement {
+    constructor() {
+      super();
+
+      const shadow = this.attachShadow({ mode: 'open' });
+
+      const container = document.createElement('div');
+      container.innerHTML = `
+        <p>Saludo Component</p>
+        <button id="saludoButton">Saludar</button>
+      `;
+
+      const button = container.querySelector('#saludoButton');
+      button.addEventListener('click', () => this.saludar());
+
+      shadow.appendChild(container);
+    }
+
+    saludar() {
+      alert('¡Hola Mundo desde Saludo Component!');
+    }
+  }
+
+  customElements.define('saludo-component', SaludoComponent);
+</script>
+
+<saludo-component></saludo-component>
+
+</body>
+</html>
