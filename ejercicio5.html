@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+    <style>
+        body {
+          margin: 0 auto;
+          padding: 20px;
+          border-radius: 4px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+          width: 400px;
+          background-color: #715b70;
+        }
+    contador-component {
+        background-color: #6d3939;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+      width: 200px;
+      text-align: center;
+    }
+
+    contador-component button {
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    contador-component button:hover {
+      background-color: #eee;
+    }
+
+    contador-component button:focus {
+      outline: none;
+    }
+
+    contador-component p {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .incrementar {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .decrementar {
+      background-color: #f00;
+      color: white;
+    }
+  </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contador Component</title>
+</head>
+<body>
+
+<script>
+class ContadorComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+
+    this.state = {
+      contador: 0
+    };
+
+    // Crea los botones y los adjunta una vez
+    const incrementButton = document.createElement('button');
+    incrementButton.textContent = '+';
+    incrementButton.addEventListener('click', () => this.incrementar());
+
+    const decrementButton = document.createElement('button');
+    decrementButton.textContent = '-';
+    decrementButton.addEventListener('click', () => this.decrementar());
+
+    this.shadowRoot.appendChild(incrementButton);
+    this.shadowRoot.appendChild(decrementButton);
+
+    this.render();
+  }
+
+  incrementar() {
+    this.state.contador++;
+    this.render();
+  }
+
+  decrementar() {
+    this.state.contador--;
+    this.render();
+  }
+
+  render() {
+    // Crea un nuevo elemento de párrafo y asigna el contenido
+    const pElement = document.createElement('p');
+    pElement.textContent = `Contador: ${this.state.contador}`;
+
+    // Limpia el contenido anterior y adjunta el nuevo párrafo
+    const shadowRoot = this.shadowRoot;
+    const existingPElement = shadowRoot.querySelector('p');
+    if (existingPElement) {
+      shadowRoot.replaceChild(pElement, existingPElement);
+    } else {
+      shadowRoot.appendChild(pElement);
+    }
+  }
+}
+
+customElements.define('contador-component', ContadorComponent);
+</script>
+
+<contador-component></contador-component>
+
+</body>
+</html>
+
+
+
